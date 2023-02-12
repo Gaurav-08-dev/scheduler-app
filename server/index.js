@@ -11,6 +11,12 @@ app.get("/api", (req, res) => {
     });
 });
 
+app.register("/register",(req,res)=>{
+    const {username,email,password}=req.body;
+    console.log(req.body)
+})
+
+
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });

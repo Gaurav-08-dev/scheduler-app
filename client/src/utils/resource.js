@@ -16,6 +16,8 @@ export const time = [
 	{ id: "18", t: "18:00pm" },
 	{ id: "19", t: "19:00pm" },
 ];
-export async function handleLogin(username, password, navigate) {}
+export async function handleLogin(username, password, navigate) {
+	
+}
 
 export async function handleRegister(email, username, password, navigate) {}
