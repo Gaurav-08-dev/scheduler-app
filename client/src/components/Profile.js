@@ -1,9 +1,15 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React,{useEffect} from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-
+    const navigate = useNavigate();
     const {id}=useParams();
+
+    useEffect(() => {
+        if (!localStorage.getItem("_id")) {
+            navigate("/");
+        }
+    }, [navigate]);
   return (
     <main className='profile'>
         <div style={{width:"70%"}}>

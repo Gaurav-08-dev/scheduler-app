@@ -1,4 +1,4 @@
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 export const time = [
 	{ id: "null", t: "Select" },
@@ -17,7 +17,64 @@ export const time = [
 	{ id: "19", t: "19:00pm" },
 ];
 export async function handleLogin(username, password, navigate) {
-	
+
+	try {
+		const request = await fetch("http://localhost:4000/login", {
+			method: "POST",
+			body: JSON.stringify({ 
+				username, 
+				password, 
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type":"application/json"
+		},
+		});
+
+		const data=await request.json();
+		if(data.error_message){
+			toast.error(data.error_message);
+		}
+		else{
+			// if login successful
+			toast.success(data.message);
+			
+			// save email and id for identification
+			localStorage.setItem("_id",data.data._id);
+			localStorage.setItem("_myEmail",data.data._email);
+			navigate("/dashboard")
+		}
+	} catch (err) {
+		console.log(err)
+	}
 }
 
-export async function handleRegister(email, username, password, navigate) {}
+export async function handleRegister(email, username, password, navigate) {
+
+	try {
+		const request = await fetch("http://localhost:4000/register", {
+			method: "POST",
+			body: JSON.stringify({
+				email,
+				username,
+				password,
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		});
+		const data = await request.json();
+		if (data.error_message) {
+			toast.error(data.error_message);
+		}
+		else {
+			toast.success(data.message);
+			navigate("/");
+		}
+	}
+	catch (err) {
+		console.log(err)
+		toast.error("Account creation failed")
+	}
+}
