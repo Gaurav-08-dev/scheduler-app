@@ -19,7 +19,7 @@ const Profile = () => {
     useEffect(() => {
         function getUserDetails() {
             if (id) {
-                fetch(`http://localhost:4000/schedules/${id}`)
+                fetch(`/schedules/${id}`)
                     .then((res) => res.json())
                     .then((data) => {
                         setUsername(data.username);

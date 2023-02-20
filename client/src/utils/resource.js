@@ -19,7 +19,7 @@ export const time = [
 export async function handleLogin(username, password, navigate) {
 
 	try {
-		const request = await fetch("http://localhost:4000/login", {
+		const request = await fetch("/login", {
 			method: "POST",
 			body: JSON.stringify({ 
 				username, 
@@ -52,9 +52,8 @@ export async function handleLogin(username, password, navigate) {
 export async function handleRegister(email, username, password, navigate) {
 
 	try {
-		const request = await fetch("http://localhost:4000/register", {
+		const request = await fetch("/register", {
 			method: "POST",
-			mode:'cors',
 			body: JSON.stringify({
 				email,
 				username,	
@@ -83,7 +82,7 @@ export async function handleRegister(email, username, password, navigate) {
 export async function handleCreateSchedule(selectedTimezone,schedule,navigate){
 	
 	try {
-		await fetch("http://localhost:4000/schedule/create",  {
+		await fetch("/schedule/create",  {
 			method:"POST",
 			body:JSON.stringify({
 				userId:localStorage.getItem("_id"),
@@ -112,7 +111,7 @@ export function fetchBookingDetails(
     setSchedules,
     setReceiverEmail
 ) {
-    fetch(`http://localhost:4000/schedules/${user}`, {
+    fetch(`/schedules/${user}`, {
         method: "POST",
         body: JSON.stringify({
             username: user,
@@ -146,7 +145,7 @@ export const sendEmail = (
 	emailjs
 		.send(
 			"service_trj6pyh",
-                "service_trj6pyh",
+                "template_j3j42zq",
 			{
 				to_email: receiverEmail,
 				from_email: email,
