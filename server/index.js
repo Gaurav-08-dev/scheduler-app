@@ -15,6 +15,21 @@ app.get("/api", (req, res) => {
     });
 });
 
+app.get("/schedules/:id", (req,res)=>{
+    const {id}=req.params;
+    let result=database.filter((db)=> db.id===id);
+
+    if(result.length === 1){
+        return res.json({
+            message:"Schedules successfully retrieved",
+            schedules:result[0].schedule,
+            username:result[0].username,
+            timezone:result[0].timezone
+        });
+    }
+
+    return res.json({error_message:"Sign in again, an error occurred..."});
+});
 
 app.post("/register",(req,res)=>{
     const {username,email,password}=req.body;
@@ -58,6 +73,20 @@ app.post("/login",(req,res)=>{
         },
     })
 
+})
+
+app.post("/schedule/create",(req,res)=>{
+    const {userId,timezone,schedule}=req.body;
+
+    // filter the database using id
+    let result=database.filter((db)=> db.id===userId)
+
+    // update user's schedule and timezone
+
+    result[0].timezone=timezone;
+    result[0].schedule=schedule;
+    res.json({message:"Ok"})
+    console.log(req.body);
 })
 
 app.listen(PORT, () => {

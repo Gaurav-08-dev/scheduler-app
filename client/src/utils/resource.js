@@ -78,3 +78,27 @@ export async function handleRegister(email, username, password, navigate) {
 		toast.error("Account creation failed")
 	}
 }
+
+export async function handleCreateSchedule(selectedTimezone,schedule,navigate){
+	
+	try {
+		await fetch("http://localhost:4000/schedule/create",  {
+			method:"POST",
+			body:JSON.stringify({
+				userId:localStorage.getItem("_id"),
+				timezone:selectedTimezone,
+				schedule,
+			}),
+			headers:{
+				Accept:"application/json",
+				"Content-type":"application/json",
+			},
+		});
+
+		// navigate to the profile page
+
+		navigate(`/profile/${localStorage.getItem("_id")}`);
+	} catch (err) {
+		console.err(err)
+	}
+}
