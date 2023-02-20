@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-
+import emailjs from "@emailjs/browser";
 export const time = [
 	{ id: "null", t: "Select" },
 	{ id: "7", t: "7:00am" },
@@ -54,9 +54,10 @@ export async function handleRegister(email, username, password, navigate) {
 	try {
 		const request = await fetch("http://localhost:4000/register", {
 			method: "POST",
+			mode:'cors',
 			body: JSON.stringify({
 				email,
-				username,
+				username,	
 				password,
 			}),
 			headers: {
@@ -102,3 +103,67 @@ export async function handleCreateSchedule(selectedTimezone,schedule,navigate){
 		console.err(err)
 	}
 }
+
+
+export function fetchBookingDetails(
+    user,
+    setError,
+    setTimezone,
+    setSchedules,
+    setReceiverEmail
+) {
+    fetch(`http://localhost:4000/schedules/${user}`, {
+        method: "POST",
+        body: JSON.stringify({
+            username: user,
+        }),
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    })
+	.then((res) => res.json())
+        .then((data) => {
+            if (data.error_message) {
+                toast.error(data.error_message);
+                setError(true);
+            } else {
+                setTimezone(data.timezone.label);
+                setSchedules(data.schedules);
+                setReceiverEmail(data.receiverEmail);
+            }
+        })
+        .catch((err) => console.error(err));
+}
+
+export const sendEmail = (
+	receiverEmail,
+	email,
+	fullName,
+	message,
+	duration
+) => {
+	emailjs
+		.send(
+			"service_trj6pyh",
+                "service_trj6pyh",
+			{
+				to_email: receiverEmail,
+				from_email: email,
+				fullName,
+				message,
+				duration,
+			},
+			"5kNWX-hde7S3kVSq_"
+		)
+		.then(
+			(result) => {
+				console.log(result.text);
+				toast.success("Session booked successfully!");
+			},
+			(error) => {
+				console.log(error.text);
+				toast.error(error.text);
+			}
+		);
+};
